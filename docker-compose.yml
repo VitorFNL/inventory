@@ -1,0 +1,49 @@
+services:
+  # Serviço do Backend Laravel (PHP-FPM)
+  backend:
+    build:
+      context: ./
+      dockerfile: docker/Dockerfile.backend
+    container_name: inventory_php_fpm
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - db
+    environment:
+      DB_CONNECTION: pgsql
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      APP_KEY: ${APP_KEY}
+
+  # Serviço do Servidor Web Nginx
+  nginx:
+    build:
+      context: ./
+      dockerfile: docker/Dockerfile.nginx
+    container_name: inventory_nginx
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - backend
+
+  # Serviço do Banco de Dados PostgreSQL
+  db:
+    image: postgres:17
+    container_name: inventory_db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+
+volumes:
+  db_data:
