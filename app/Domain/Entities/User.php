@@ -21,7 +21,12 @@ class User
             throw new \InvalidArgumentException('Password is required for new users.');
         }
 
-        return new self($id, $name, $email, $password);
+        return new self(
+            id: $id,
+            name: $name,
+            email: $email,
+            password: $password
+        );
     }
 
     public function getId(): ?int
