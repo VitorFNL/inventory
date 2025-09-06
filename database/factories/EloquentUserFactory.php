@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\EloquentUser>
  */
-class UserFactory extends Factory
+class EloquentUserFactory extends Factory
 {
     /**
      * The current password being used by the factory.
@@ -29,4 +29,6 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make('password'),
         ];
     }
+
+    
 }
