@@ -23,7 +23,13 @@ class Product
             throw new \InvalidArgumentException('Price and quantity must be non-negative.');
         }
 
-        return new self($name, $description, $price, $quantity, $id);
+        return new self(
+            id: $id,
+            name: $name,
+            description: $description,
+            price: $price,
+            quantity: $quantity,
+        );
     }
 
     public function getId(): ?int

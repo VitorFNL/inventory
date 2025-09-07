@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Persistence\Eloquent;
 
 use App\Domain\Entities\Product;
+use App\Filters\FilterInterface;
 use App\Infrastructure\Persistence\ProductRepository;
 use App\Models\EloquentProduct;
 
@@ -10,12 +11,14 @@ class EloquentProductRepository implements ProductRepository
 {
     private function mapToDomain(EloquentProduct $product): Product
     {
+        $product->price = floatval($product->price);
+
         return Product::create(
-            $product->name,
-            $product->price,
-            $product->quantity,
-            $product->id,
-            $product->description
+            name: $product->name,
+            price: $product->price,
+            quantity: $product->quantity,
+            id: $product->id,
+            description: $product->description
         );
     }
 
@@ -30,11 +33,19 @@ class EloquentProductRepository implements ProductRepository
         return $this->mapToDomain($eloquent_product);
     }
 
-    public function findAll(): array
+    /**
+     *
+     * @param FilterInterface[] $filters
+     */
+    public function findAll(array $filters): array
     {
-        $eloquent_products = EloquentProduct::all();
+        $query = EloquentProduct::query();
 
-        $products = $eloquent_products->map(function (EloquentProduct $product) {
+        foreach ($filters as $filterData) {
+            $filterData['filter']->apply($query, $filterData['value']);
+        }
+
+        $products = $query->get()->map(function (EloquentProduct $product) {
             return $this->mapToDomain($product);
         })->toArray();
 

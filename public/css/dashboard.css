@@ -1,0 +1,99 @@
+:root {
+    --main-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --main-color: #667eea;
+    --secondary-color: #764ba2;
+}
+
+.navbar-custom {
+    background: var(--main-gradient);
+}
+
+.btn-primary-custom {
+    background: var(--main-gradient);
+    border: none;
+    transition: transform 0.2s;
+}
+
+.btn-primary-custom:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+.card-header-custom {
+    background: var(--main-gradient);
+    color: white;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(102, 126, 234, 0.1);
+}
+
+.quantity-edit {
+    max-width: 80px;
+}
+
+.field-edit input,
+.field-edit textarea {
+    font-size: 0.875rem;
+}
+
+.field-edit textarea {
+    resize: none;
+}
+
+.btn-edit {
+    background: #28a745;
+    border: none;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+}
+
+.btn-edit:hover {
+    background: #218838;
+    color: white;
+}
+
+.btn-save {
+    background: #007bff;
+    border: none;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+}
+
+.btn-save:hover {
+    background: #0056b3;
+    color: white;
+}
+
+.btn-cancel {
+    background: #6c757d;
+    border: none;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+}
+
+.btn-cancel:hover {
+    background: #5a6268;
+    color: white;
+}
+
+.price-badge {
+    background: var(--main-gradient);
+    color: white;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+}
+
+.sync-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}

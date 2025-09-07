@@ -6,6 +6,7 @@ use App\Infrastructure\Persistence\Eloquent\EloquentProductRepository;
 use App\Infrastructure\Persistence\Eloquent\EloquentUserRepository;
 use App\Infrastructure\Persistence\ProductRepository;
 use App\Infrastructure\Persistence\UserRepository;
+use App\UseCases\ListProducts\ListProducts;
 use App\UseCases\Login\Login;
 use Illuminate\Support\ServiceProvider;
 
@@ -20,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ProductRepository::class, EloquentProductRepository::class);
 
         $this->app->bind(Login::class, Login::class);
+        $this->app->bind(ListProducts::class, ListProducts::class);
     }
 
     /**
