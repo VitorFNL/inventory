@@ -12,11 +12,17 @@ class LogoutController extends Controller
      */
     public function __invoke(Request $request)
     {
-        Auth::logout();
-        
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        
-        return redirect('/login')->with('success', 'Logout realizado com sucesso!');
+        try {
+            Auth::logout();
+            
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            
+            return redirect('/login')->with('success', 'Logout realizado com sucesso!');
+        } catch (\Exception $e) {
+            return back()->withErrors([
+                'logout' => 'Erro ao tentar fazer logout: ' . $e->getMessage(),
+            ]);
+        }
     }
 }

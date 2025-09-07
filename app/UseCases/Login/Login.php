@@ -19,7 +19,7 @@ class Login
         ];
 
         if (!Auth::attempt($credentials)) {
-            return null;
+            throw new \Exception('As credenciais fornecidas não correspondem aos nossos registros.', 401);
         }
 
         $laravel_user = Auth::user();
