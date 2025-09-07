@@ -156,35 +156,85 @@ function showSuccessMessage(productId) {
 
 // Listener para o botão de sincronização
 document.getElementById('syncApiBtn').addEventListener('click', function () {
-    // TODO: Implementar chamada para sincronização com API
-    console.log('Sincronizando com Fake Store API...');
+    const button = this;
+    
+    // Feedback visual durante sincronização
+    button.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm me-2"></i>Sincronizando...';
+    button.disabled = true;
 
-    // Feedback visual temporário
-    this.innerHTML = '<i class="bi bi-arrow-repeat spinner-border spinner-border-sm me-2"></i>Sincronizando...';
-    this.disabled = true;
+    // Fazer requisição para sincronizar
+    fetch('/api/products/sync', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.products.length > 0) {
+            // Mostrar mensagem de sucesso
+            showSyncSuccessMessage(data.products);
+            
+            // Recarregar a página para mostrar produtos atualizados
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
+        } else {
+            throw new Error(data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Erro ao sincronizar produtos:', error);
+        showSyncErrorMessage(error.message);
+    })
+    .finally(() => {
+        // Restaurar botão
+        button.innerHTML = '<i class="bi bi-arrow-repeat me-2"></i>Sincronizar com API';
+        button.disabled = false;
+    });
+});
+
+// Função para mostrar mensagem de sucesso da sincronização
+function showSyncSuccessMessage(products) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = 'alert alert-success alert-dismissible fade show mt-3';
+    alertDiv.innerHTML = `
+        <i class="bi bi-check-circle me-2"></i>
+        <strong>Sincronização concluída!</strong><br>
+        <small>
+            ${products.length} produtos adicionados ou atualizados
+        </small>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+
+    document.querySelector('.sync-section').appendChild(alertDiv);
 
     setTimeout(() => {
-        this.innerHTML = '<i class="bi bi-arrow-repeat me-2"></i>Sincronizar com API';
-        this.disabled = false;
+        if (alertDiv.parentElement) {
+            alertDiv.remove();
+        }
+    }, 5000);
+}
 
-        // Simular feedback de sucesso
-        const alertDiv = document.createElement('div');
-        alertDiv.className = 'alert alert-success alert-dismissible fade show mt-3';
-        alertDiv.innerHTML = `
-                    <i class="bi bi-check-circle me-2"></i>
-                    Sincronização concluída! Os produtos foram atualizados.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                `;
+// Função para mostrar mensagem de erro da sincronização
+function showSyncErrorMessage(message) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = 'alert alert-danger alert-dismissible fade show mt-3';
+    alertDiv.innerHTML = `
+        <i class="bi bi-exclamation-triangle me-2"></i>
+        <strong>Erro na sincronização:</strong> ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
 
-        this.parentElement.appendChild(alertDiv);
+    document.querySelector('.sync-section').appendChild(alertDiv);
 
-        setTimeout(() => {
-            if (alertDiv.parentElement) {
-                alertDiv.remove();
-            }
-        }, 5000);
-    }, 3000);
-});
+    setTimeout(() => {
+        if (alertDiv.parentElement) {
+            alertDiv.remove();
+        }
+    }, 5000);
+}
 
 // Permitir salvar com Enter em qualquer campo
 document.addEventListener('keydown', function (event) {

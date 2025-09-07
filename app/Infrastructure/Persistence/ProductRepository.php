@@ -13,5 +13,7 @@ interface ProductRepository
      * @param FilterInterface[] $filters
      */
     public function findAll(array $filters): array;
-    public function save(Product $product): void;
+    public function save(Product $product): ?Product;
+    public function deleteById(int $id): void;
+    public function deleteWithoutExternalId(): void;
 }

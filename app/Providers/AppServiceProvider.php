@@ -8,6 +8,8 @@ use App\Infrastructure\Persistence\ProductRepository;
 use App\Infrastructure\Persistence\UserRepository;
 use App\UseCases\ListProducts\ListProducts;
 use App\UseCases\Login\Login;
+use App\UseCases\SyncProducts\FakeStoreSyncProducts;
+use App\UseCases\SyncProducts\SyncProductsInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -22,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(Login::class, Login::class);
         $this->app->bind(ListProducts::class, ListProducts::class);
+        $this->app->bind(SyncProductsInterface::class, FakeStoreSyncProducts::class);
     }
 
     /**

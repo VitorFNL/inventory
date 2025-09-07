@@ -18,7 +18,8 @@ class EloquentProductRepository implements ProductRepository
             price: $product->price,
             quantity: $product->quantity,
             id: $product->id,
-            description: $product->description
+            description: $product->description,
+            external_id: $product->external_id
         );
     }
 
@@ -54,16 +55,33 @@ class EloquentProductRepository implements ProductRepository
         return $products;
     }
 
-    public function save(Product $product): void
+    public function save(Product $product): ?Product
     {
-        EloquentProduct::updateOrCreate(
+        $eloquentProduct = EloquentProduct::updateOrCreate(
             ['id' => $product->getId()],
             [
                 'name' => $product->getName(),
                 'description' => $product->getDescription(),
                 'price' => $product->getPrice(),
-                'quantity' => $product->getQuantity()
+                'quantity' => $product->getQuantity(),
+                'external_id' => $product->getExternalId()
             ]
         );
+
+        if (!$eloquentProduct) {
+            return null;
+        }
+
+        return $this->mapToDomain($eloquentProduct);
+    }
+
+    public function deleteById(int $id): void
+    {
+        EloquentProduct::where('id', $id)->delete();
+    }
+
+    public function deleteWithoutExternalId(): void
+    {
+        EloquentProduct::where('external_id', null)->delete();
     }
 }

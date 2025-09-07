@@ -21,6 +21,7 @@ class EloquentProduct extends Model
         'name',
         'description',
         'price',
-        'quantity'
+        'quantity',
+        'external_id'
     ];
 }
