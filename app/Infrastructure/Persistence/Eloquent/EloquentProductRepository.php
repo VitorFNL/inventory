@@ -45,6 +45,8 @@ class EloquentProductRepository implements ProductRepository
             $filterData['filter']->apply($query, $filterData['value']);
         }
 
+        $query->orderBy('id', 'asc');
+
         $products = $query->get()->map(function (EloquentProduct $product) {
             return $this->mapToDomain($product);
         })->toArray();
