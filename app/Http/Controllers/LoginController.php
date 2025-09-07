@@ -36,6 +36,7 @@ class LoginController extends Controller
         if (!$user) {
             return back()->withErrors([
                 'email' => 'As credenciais fornecidas não correspondem aos nossos registros.',
+                'password' => 'As credenciais fornecidas não correspondem aos nossos registros.',
             ])->withInput($request->except('password'));
         }
 
