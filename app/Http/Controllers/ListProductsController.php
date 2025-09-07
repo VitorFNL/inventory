@@ -20,19 +20,19 @@ class ListProductsController extends Controller
     {
         try {
             $request->validate([
-                'name' => 'sometimes|string',
-                'description' => 'sometimes|string',
-                'priceOrder' => 'sometimes|string|in:asc,desc',
+                'nameFilter' => 'sometimes|string',
+                'descriptionFilter' => 'sometimes|string',
+                'priceOrderFilter' => 'sometimes|string|in:asc,desc',
             ]);
-            
-            $priceOrder = request('priceOrder');
-            
+
+            $priceOrder = request('priceOrderFilter');
+
             $orderEnum = $priceOrder ? QueryOrderEnum::from($priceOrder) : null;
             
             // Pegar parâmetros diretamente da URL usando request() helper
             $products = $this->listProducts->execute(new ListProductsInput(
-                nameFilter: request('name'),
-                descriptionFilter: request('description'),
+                nameFilter: request('nameFilter') ?: null,
+                descriptionFilter: request('descriptionFilter') ?: null,
                 priceOrderFilter: $orderEnum
             ));
             
@@ -40,6 +40,7 @@ class ListProductsController extends Controller
                 'products' => $products,
             ]);
         } catch (\Exception $e) {
+            dd($e->getMessage());
             return back()->withErrors([
                 'list_products' => 'Erro ao listar produtos: ' . $e->getMessage(),
             ]);

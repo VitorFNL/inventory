@@ -274,3 +274,61 @@ document.addEventListener('input', function (event) {
         }
     }
 });
+
+// Event listeners para filtros
+document.addEventListener('DOMContentLoaded', function() {
+    // Botão de filtrar
+    document.getElementById('filterBtn').addEventListener('click', function() {
+        applyFilters();
+    });
+
+    // Botão de limpar filtros
+    document.getElementById('clearFiltersBtn').addEventListener('click', function() {
+        clearFilters();
+    });
+
+    // Aplicar filtros ao pressionar Enter em qualquer campo de filtro
+    const filterInputs = document.querySelectorAll('#nameFilter, #descriptionFilter, #priceOrderFilter');
+    filterInputs.forEach(input => {
+        input.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                applyFilters();
+            }
+        });
+    });
+});
+
+// Função para aplicar filtros
+function applyFilters() {
+    const nameFilter = document.getElementById('nameFilter').value.trim();
+    const descriptionFilter = document.getElementById('descriptionFilter').value.trim();
+    const priceOrderFilter = document.getElementById('priceOrderFilter').value.trim();
+    
+    const params = new URLSearchParams();
+
+    if (nameFilter) {
+        params.append('nameFilter', nameFilter);
+    }
+    if (descriptionFilter) {
+        params.append('descriptionFilter', descriptionFilter);
+    }
+    if (priceOrderFilter) {
+        params.append('priceOrderFilter', priceOrderFilter);
+    }
+
+    // Navegar para a nova URL com os filtros
+    const newUrl = `${window.location.pathname}?${params.toString()}`;
+    window.location.href = newUrl;
+}
+
+// Função para limpar filtros
+function clearFilters() {
+    // Limpar os campos do formulário
+    document.getElementById('nameFilter').value = '';
+    document.getElementById('descriptionFilter').value = '';
+    document.getElementById('priceOrderFilter').value = '';
+    
+    // Navegar para a URL sem parâmetros
+    window.location.href = window.location.pathname;
+}

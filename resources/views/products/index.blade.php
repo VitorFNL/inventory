@@ -80,7 +80,7 @@
         <!-- Filtros -->
         <div class="card shadow-sm mb-4">
             <div class="card-body">
-                <form method="GET" action="{{ route('dashboard') }}" class="row g-3">
+                <form class="row g-3" id="filterForm">
                     <div class="col-md-3">
                         <label for="nameFilter" class="form-label">
                             <i class="bi bi-search me-1"></i>
@@ -122,14 +122,14 @@
                     </div>
                     <div class="col-md-3 d-flex align-items-end">
                         <div class="w-100">
-                            <button type="submit" class="btn btn-primary-custom me-2">
+                            <button type="button" class="btn btn-primary-custom me-2" id="filterBtn">
                                 <i class="bi bi-funnel me-1"></i>
                                 Filtrar
                             </button>
-                            <a href="{{ route('dashboard') }}" class="btn btn-outline-secondary">
+                            <button type="button" class="btn btn-outline-secondary" id="clearFiltersBtn">
                                 <i class="bi bi-x-circle me-1"></i>
                                 Limpar
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </form>
